@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Mokshitha ❤️</title>
+    <style>
+        :root { --pink: #ff4d6d; --dark-pink: #d63384; --light-pink: #ffeff2; }
+        body { margin: 0; font-family: 'Georgia', serif; background-color: var(--light-pink); color: var(--dark-pink); text-align: center; overflow: hidden; }
+        .screen { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; box-sizing: border-box; }
+        .active { display: flex; }
+        
+        h1 { font-size: 2.2rem; margin-bottom: 10px; font-style: italic; }
+        p { font-size: 1.1rem; color: #555; }
+        .btn { background: var(--pink); color: white; border: none; padding: 15px 35px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3); transition: 0.3s; }
+        .btn:hover { transform: scale(1.05); background: var(--dark-pink); }
+
+        /* Level 1: Clicker */
+        #heart-tap { font-size: 100px; cursor: pointer; transition: 0.1s; user-select: none; filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.5)); }
+        #heart-tap:active { transform: scale(0.8); }
+        .progress-bar { width: 80%; height: 15px; background: #eee; border-radius: 10px; margin-top: 25px; overflow: hidden; border: 1px solid #ddd; }
+        #progress { width: 0%; height: 100%; background: linear-gradient(90deg, var(--pink), var(--dark-pink)); transition: 0.2s; }
+
+        /* Level 2: Memory Game */
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 320px; margin-top: 20px; }
+        .card { width: 70px; height: 70px; background: var(--pink); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: transparent; cursor: pointer; transition: 0.3s; }
+        .card.flipped { background: white; color: black; border: 2px solid var(--pink); transform: rotateY(180deg); }
+        .card.matched { background: #ffb3c1; color: white; cursor: default; transform: scale(0.9); opacity: 0.7; }
+
+        /* Level 3: Proposal */
+        .gif-img { width: 300px; max-width: 85%; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .buttons { display: flex; gap: 20px; position: relative; width: 100%; justify-content: center; height: 100px; align-items: center; }
+        #noButton { position: absolute; background: #adb5bd; opacity: 0.8; }
+        
+        /* Floating Hearts Animation */
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen active">
+        <img class="gif-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGY2eWFyc2Z1ZzJyeHh2eXN5YXN5YXN5YXN5YXN5YXN5YXN5YXN5JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l41JWZ5th6CCGIn7y/giphy.gif">
+        <h1>Hi Mokshitha... ❤️</h1>
+        <p>I have something special for you, but first, play a little game with me?</p>
+        <button class="btn" onclick="nextLevel(1)">I'm Ready ❤️</button>
+    </div>
+
+    <!-- Level 1: Tap Challenge -->
+    <div id="level1" class="screen">
+        <h1>Fill my heart with your love...</h1>
+        <div id="heart-tap" onclick="tapHeart()">❤️</div>
+        <div class="progress-bar"><div id="progress"></div></div>
+        <p>Tap, tap, tap!</p>
+    </div>
+
+    <!-- Level 2: Memory Match -->
+    <div id="level2" class="screen">
+        <h1>Match our feelings...</h1>
+        <div class="grid" id="memory-grid"></div>
+    </div>
+
+    <!-- Level 3: Proposal -->
+    <div id="level3" class="screen">
+        <img id="final-gif" class="gif-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z0dzZ6bmZ3OTZ3ZzNxaG10amE1NXp6N3BxdnJ0eXp6Z3h6dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKoWXlo3S1Qfe3C/giphy.gif">
+        <h1 id="main-text">Mokshitha, will you be my Valentine? ❤️</h1>
+        <div class="buttons">
+            <button id="yesButton" class="btn" onclick="celebrate()">Yes, I will!</button>
+            <button id="noButton" class="btn" onmouseover="moveButton()">No</button>
+        </div>
+    </div>
+
+    <script>
+        function nextLevel(num) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(num === 1 ? 'level1' : num === 2 ? 'level2' : 'level3').classList.add('active');
+            if(num === 2) initMemoryGame();
+        }
+
+        // --- LEVEL 1: TAP HEART ---
+        let taps = 0;
+        function tapHeart() {
+            taps += 10;
+            document.getElementById('progress').style.width = taps + '%';
+            if (taps >= 100) {
+                setTimeout(() => nextLevel(2), 500);
+            }
+        }
+
+        // --- LEVEL 2: MEMORY GAME ---
+        const emojis = ['💋', '💋', '🔥', '🔥', '👩‍❤️‍💋‍👨', '👩‍❤️‍💋‍👨', '🌹', '🌹', '❤️', '❤️', '💍', '💍'];
+        let flippedCards = [];
+        let matchedCount = 0;
+
+        function initMemoryGame() {
+            const grid = document.getElementById('memory-grid');
+            const shuffled = emojis.sort(() => Math.random() - 0.5);
+            shuffled.forEach((emoji) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.emoji = emoji;
+                card.onclick = () => flipCard(card);
+                grid.appendChild(card);
+            });
+        }
+
+        function flipCard(card) {
+            if (flippedCards.length < 2 && !card.classList.contains('flipped') && !card.classList.contains('matched')) {
+                card.classList.add('flipped');
+                card.innerText = card.dataset.emoji;
+                flippedCards.push(card);
+                if (flippedCards.length === 2) {
+                    if (flippedCards[0].dataset.emoji === flippedCards[1].dataset.emoji) {
+                        flippedCards.forEach(c => c.classList.add('matched'));
+                        flippedCards = [];
+                        matchedCount += 2;
+                        if (matchedCount === emojis.length) setTimeout(() => nextLevel(3), 1000);
+                    } else {
+                        setTimeout(() => {
+                            flippedCards.forEach(c => { c.classList.remove('flipped'); c.innerText = ''; });
+                            flippedCards = [];
+                        }, 800);
+                    }
+                }
+            }
+        }
+
+        // --- LEVEL 3: PROPOSAL ---
+        function moveButton() {
+            const noBtn = document.getElementById('noButton');
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function celebrate() {
+            document.getElementById('main-text').innerHTML = "I can't wait to hold you... <br> I love you so much, Mokshitha! ❤️";
+            // THE PASSIONATE KISS GIF
+            document.getElementById('final-gif').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYxcDlsZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/1108D2II9uSBO/giphy.gif";
+            document.querySelector('.buttons').style.display = 'none';
+            setInterval(createFloatingHeart, 200);
+        }
+
+        function createFloatingHeart() {
+            const h = document.createElement('div');
+            h.innerHTML = ['❤️', '💋', '💖', '🔥'][Math.floor(Math.random() * 4)];
+            h.style.position = 'fixed';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.bottom = '-50px';
+            h.style.fontSize = Math.random() * 20 + 20 + 'px';
+            h.style.animation = `float ${Math.random() * 2 + 3}s linear forwards`;
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
